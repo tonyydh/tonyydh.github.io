@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>ChanceChain</title>
+  <!-- Bootstrap core CSS-->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <!-- Page level plugin CSS-->
+  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin.css" rel="stylesheet">
+</head>
+
+<body class="fixed-nav bg-dark" id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="index.html">Chance Chain</a>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+
+      <ul class="navbar-nav ml-auto">
+
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#newModal">
+            <i class="fa fa-fw fa-edit"></i></a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#mychancesModal">
+            <i class="fa fa-fw fa-star"></i></a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#mypostsModal">
+            <i class="fa fa-fw fa-list"></i></a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#logoutModal">
+            <i class="fa fa-fw fa-sign-out-alt"></i></a>
+        </li>
+
+      </ul>
+
+    </div>
+  </nav>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <!-- Icon Cards-->
+      <!-- Area Chart Example-->
+
+        <div class="nav-item" id="balance" style="text-align:center">
+        </div>
+      <div class="row">
+
+        <div class="col-lg">
+          <div class="card mb-3">
+            <div class="card-header">
+              <i class="fa fa-star"></i> Chances</div>
+            <div class="list-group list-group-flush small" id="ChancesList">
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- New Posts -->
+    <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Post New Chance</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input class="form-control mb-2" id="newChanceName" placeholder="Name">
+            <input class="form-control mb-2" id="newChanceDes" placeholder="Description">
+            <input class="form-control mb-2" id="newChancePrice" placeholder="Price">
+            <input class="form-control mb-2" id="newChanceLimit" placeholder="Limit of Takers">
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button class="btn btn-primary" onclick='CC.createChance($("#newChanceName").val(), $("#newChanceDes").val(), $("#newChancePrice").val(), $("#newChanceLimit").val(), {gas: 300000});$(this).prop("disabled", true);alert("Success!")'>Post</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- My Chances -->
+    <div class="modal fade" id="mychancesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">My Chances</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="list-group list-group-flush small" id="myChancesList">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- My Posts -->
+    <div class="modal fade" id="mypostsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">My Posts</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="list-group list-group-flush small" id="myPostsList">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" href="login.html">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin.min.js"></script>
+    <!-- Custom scripts for this page-->
+    <script src="js/sb-admin-datatables.min.js"></script>
+    <script src="js/sb-admin-charts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <script>
+
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            // set the provider you want from Web3.providers
+            web3 = new Web3(new Web3.providers.HttpProvider("https://kovan.infura.io/aNCMwJUDs0lZhWmDd6jF"));
+        }
+
+
+
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+
+/*
+  var web3 = new Web3();
+  var global_keystore;
+  function setWeb3Provider(keystore) {
+    var web3Provider = new HookedWeb3Provider({
+      host: "https://kovan.infura.io/aNCMwJUDs0lZhWmDd6jF",
+      transaction_signer: keystore
+    });
+    web3.setProvider(web3Provider);
+  }
+*/
+  function newAddresses(password) {
+
+    if (password == '') {
+      password = prompt('Enter password to retrieve addresses', 'Password');
+    }
+    var numAddr = parseInt(document.getElementById('numAddr').value)
+    global_keystore.keyFromPassword(password, function(err, pwDerivedKey) {
+    global_keystore.generateNewAddress(pwDerivedKey, numAddr);
+    var addresses = global_keystore.getAddresses();
+    document.getElementById('sendFrom').innerHTML = ''
+    document.getElementById('functionCaller').innerHTML = ''
+    for (var i=0; i<addresses.length; ++i) {
+      document.getElementById('sendFrom').innerHTML += '<option value="' + addresses[i] + '">' + addresses[i] + '</option>'
+      document.getElementById('functionCaller').innerHTML += '<option value="' + addresses[i] + '">' + addresses[i] + '</option>'
+    }
+    getBalances();
+  })
+  }
+  function getBalances() {
+
+    var addresses = global_keystore.getAddresses();
+    document.getElementById('addr').innerHTML = 'Retrieving addresses...'
+    async.map(addresses, web3.eth.getBalance, function(err, balances) {
+      async.map(addresses, web3.eth.getTransactionCount, function(err, nonces) {
+        document.getElementById('addr').innerHTML = ''
+        for (var i=0; i<addresses.length; ++i) {
+          document.getElementById('addr').innerHTML += '<div>' + addresses[i] + ' (Bal: ' + (balances[i] / 1.0e18) + ' ETH, Nonce: ' + nonces[i] + ')' + '</div>'
+        }
+      })
+    })
+  }
+  function setSeed() {
+    var password = prompt('Enter Password to encrypt your seed', 'Password');
+  lightwallet.keystore.createVault({
+    password: password,
+    seedPhrase: document.getElementById('seed').value,
+    //random salt
+    hdPathString: "m/0'/0'/0'"
+  }, function (err, ks) {
+    global_keystore = ks
+    document.getElementById('seed').value = ''
+
+    newAddresses(password);
+    setWeb3Provider(global_keystore);
+
+    getBalances();
+    })
+  }
+  function newWallet() {
+    var extraEntropy = document.getElementById('userEntropy').value;
+    document.getElementById('userEntropy').value = '';
+    var randomSeed = lightwallet.keystore.generateRandomSeed(extraEntropy);
+    var infoString = 'Your new wallet seed is: "' + randomSeed +
+      '". Please write it down on paper or in a password manager, you will need it to access your wallet. Do not let anyone see this seed or they can take your Ether. ' +
+      'Please enter a password to encrypt your seed while in the browser.'
+    var password = prompt(infoString, 'Password');
+  lightwallet.keystore.createVault({
+    password: password,
+    seedPhrase: randomSeed,
+    //random salt
+    hdPathString: "m/0'/0'/0'"
+  }, function (err, ks) {
+    global_keystore = ks
+
+    newAddresses(password);
+    setWeb3Provider(global_keystore);
+    getBalances();
+    })
+  }
+  function showSeed() {
+    var password = prompt('Enter password to show your seed. Do not let anyone else see your seed.', 'Password');
+    global_keystore.keyFromPassword(password, function(err, pwDerivedKey) {
+    var seed = global_keystore.getSeed(pwDerivedKey);
+    alert('Your seed is: "' + seed + '". Please write it down.');
+    });
+  }
+  function sendEth() {
+    var fromAddr = document.getElementById('sendFrom').value
+    var toAddr = document.getElementById('sendTo').value
+    var valueEth = document.getElementById('sendValueAmount').value
+    var value = parseFloat(valueEth)*1.0e18
+    var gasPrice = 18000000000
+    var gas = 50000
+    web3.eth.sendTransaction({from: fromAddr, to: toAddr, value: value, gasPrice: gasPrice, gas: gas}, function (err, txhash) {
+      console.log('error: ' + err)
+      console.log('txhash: ' + txhash)
+    })
+  }
+  function functionCall() {
+    var fromAddr = document.getElementById('functionCaller').value
+    var contractAddr = document.getElementById('contractAddr').value
+    var abi = JSON.parse(document.getElementById('contractAbi').value)
+    var contract = web3.eth.contract(abi).at(contractAddr)
+    var functionName = document.getElementById('functionName').value
+    var args = JSON.parse('[' + document.getElementById('functionArgs').value + ']')
+    var valueEth = document.getElementById('sendValueAmount').value
+    var value = parseFloat(valueEth)*1.0e18
+    var gasPrice = 50000000000
+    var gas = 4541592
+    args.push({from: fromAddr, value: value, gasPrice: gasPrice, gas: gas})
+    var callback = function(err, txhash) {
+      console.log('error: ' + err)
+      console.log('txhash: ' + txhash)
+    }
+    args.push(callback)
+    contract[functionName].apply(this, args)
+  }
+</script>
+    <script>
+
+      var ChanceContract = web3.eth.contract(
+        [
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"name": "DeclineTaker",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"name": "ApproveTaker",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"name": "TakeChance",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "chanceOwner",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "chanceID",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "chanceName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "chanceDescription",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "chancePrice",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "approvedCount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "appliedCount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "chanceLimitOfTaker",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "chanceState",
+				"type": "string"
+			}
+		],
+		"name": "CreateChance",
+		"type": "event"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_cid",
+				"type": "uint256"
+			},
+			{
+				"name": "_taker",
+				"type": "address"
+			}
+		],
+		"name": "approveTaker",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"name": "_price",
+				"type": "uint256"
+			},
+			{
+				"name": "_limitOfTakers",
+				"type": "uint256"
+			}
+		],
+		"name": "createChance",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_cid",
+				"type": "uint256"
+			},
+			{
+				"name": "_taker",
+				"type": "address"
+			}
+		],
+		"name": "declineTaker",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_cid",
+				"type": "uint256"
+			}
+		],
+		"name": "takeChance",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "allChances",
+		"outputs": [
+			{
+				"name": "chanceOwner",
+				"type": "address"
+			},
+			{
+				"name": "chanceID",
+				"type": "uint256"
+			},
+			{
+				"name": "chanceName",
+				"type": "string"
+			},
+			{
+				"name": "chanceDescription",
+				"type": "string"
+			},
+			{
+				"name": "chancePrice",
+				"type": "uint256"
+			},
+			{
+				"name": "approvedCount",
+				"type": "uint256"
+			},
+			{
+				"name": "appliedCount",
+				"type": "uint256"
+			},
+			{
+				"name": "chanceLimitOfTaker",
+				"type": "uint256"
+			},
+			{
+				"name": "chanceState",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_cid",
+				"type": "uint256"
+			},
+			{
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "appliedCheck",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "chancesCount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "myChances",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "myChancesCount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "myPosts",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "myPostsCount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_cid",
+				"type": "uint256"
+			},
+			{
+				"name": "_add",
+				"type": "address"
+			}
+		],
+		"name": "statusCheck",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]);
+
+        var CC = ChanceContract.at("0x2995bf63f017dd11a94310ba060751d13ee73d68");
+
+        console.log(CC);
+
+        var aa = CC.chancesCount().c[0];
+        console.log(aa);
+
+
+
+
+      for (i=1;i<=aa;i++) {
+        var ccc = CC.allChances(aa - i);
+        $("#ChancesList").append('<a class="list-group-item" id="Chance'+i+'"><div class="media"><img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt=""><div class="media-body"><strong>"ID: '+ccc[1].c[0]+' &nbsp; "</strong>'+ccc[2]+'<p>'+ccc[3]+'</p><div class="text-muted smaller">Price: $'+ccc[4].c[0]+' &nbsp; Taker Count: '+ccc[5].c[0]+'/'+ccc[7].c[0]+' &nbsp; Status: '+ccc[8]+' &nbsp; Owner: '+ccc[0]+'</div></div><button class="btn btn-primary btn-block" style="width:100px" onclick="">Take</button></div></a>');
+        if (CC.statusCheck(aa - i, web3.eth.defaultAccount) == ""){
+        $("#Chance" + i + " button").attr("onclick","CC.takeChance("+ccc[1].c[0]+", {value:"+ccc[4].c[0]+", gas:300000});$(this).prop('disabled', true);alert('Success!')");
+          } else {
+            $("#Chance" + i + " button").attr({disabled:'true',class:'btn btn-secondary'});
+}
+        console.log(ccc);
+      }
+
+      $("#balance").html("Address: "+web3.eth.defaultAccount+"<br>Balance: $ "+web3.eth.getBalance(web3.eth.defaultAccount));
+
+
+
+      var bb = CC.myChancesCount(web3.eth.defaultAccount).c[0];
+      console.log(bb);
+
+      for (i=0;i<bb;i++) {
+
+        var cid = CC.myChances(web3.eth.defaultAccount, i).c[0];
+
+        console.log(cid);
+
+        var ddd = CC.allChances(cid);
+
+        var eee = CC.statusCheck(cid,web3.eth.defaultAccount);
+
+        console.log(eee);
+
+        $("#myChancesList").append('<a class="list-group-item" id="myChance'+i+'"><div class="media"><img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt=""><div class="media-body"><strong>ID: '+ddd[1].c[0]+' &nbsp; '+ddd[2]+'</strong><p>'+ddd[3]+'</p><div class="text-muted smaller">Price: $'+ddd[4].c[0]+' &nbsp; Taker Count: '+ddd[5].c[0]+'/'+ddd[7].c[0]+' &nbsp; Status: '+ddd[8]+'</div></div><div>'+eee+'</div></div></a>');
+
+        }
+
+
+        var xxx = CC.myPostsCount(web3.eth.defaultAccount).c[0];
+        console.log("xxx="+xxx);
+
+        for (y=1;y<=xxx;y++) {
+
+          var mpid = CC.myPosts(web3.eth.defaultAccount, y-1).c[0];
+
+          var ppp = CC.allChances(mpid);
+
+          $("#myPostsList").append('<a class="list-group-item" id="myPost'+y+'"><div class="media"><img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt=""><div class="media-body"><strong>ID: '+ppp[1].c[0]+' &nbsp; '+ppp[2]+'</strong><p>'+ppp[3]+'</p><div class="text-muted smaller">Price: $'+ppp[4].c[0]+' &nbsp; Taker Count: '+ppp[5].c[0]+'/'+ppp[7].c[0]+' &nbsp; Status: '+ppp[8]+'</div></div></div><div id="mypostid'+y+'"></div></a>');
+
+          var zzz = ppp[6].c[0];
+          console.log(zzz)
+
+          for (j=1;j<=zzz;j++) {
+            var wsx = CC.appliedCheck(mpid,j-1);
+            $("#mypostid"+y).append('<div class="row"><div>'+wsx+'</div><div class="col" style="text-align:right"><a href="#" onclick="CC.approveTaker('+mpid+','+wsx+')"><i class="fa fa-2x fa-check-circle" style="color:green;width:30px"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-2x fa-times-circle" style="color:red;width:30px"></i></div></div>');
+
+            console.log(j+wsx);
+        }
+      }
+
+
+
+    </script>
+    <script type="text/javascript" src="lightwallet.min.js"></script>
+    <script type="text/javascript" src="hooked-web3-provider.js"></script>
+  </div>
+</body>
+
+</html>
