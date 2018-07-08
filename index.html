@@ -59,7 +59,9 @@
       <!-- Area Chart Example-->
 
         <div class="nav-item" id="balance" style="text-align:center">
+          <a href="https://kovan.etherscan.io/address/0x2995bf63f017dd11a94310ba060751d13ee73d68">Smart Contract</a><br>
         </div>
+
       <div class="row">
 
         <div class="col-lg">
@@ -691,7 +693,7 @@
         console.log(ccc);
       }
 
-      $("#balance").html("Address: "+web3.eth.defaultAccount+"<br>Balance: $ "+web3.eth.getBalance(web3.eth.defaultAccount));
+      $("#balance").append("Address: "+web3.eth.defaultAccount+"<br>Balance: $ "+web3.eth.getBalance(web3.eth.defaultAccount));
 
 
 
